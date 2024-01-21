@@ -9,3 +9,7 @@ node_modules/
 .old
 .wrangler
 package-lock.json
+
+# editors
+.idea/
+.vscode/
