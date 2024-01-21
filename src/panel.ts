@@ -29,7 +29,7 @@ export async function GetPanel(request: Request, env: Env): Promise<Response> {
       uuid = uuidv4()
       await env.settings.put("UUID", uuid)
     }
-    
+
     var htmlMessage = ""
     const message = url.searchParams.get("message")
     if (message == "success") {
@@ -161,7 +161,7 @@ export async function GetPanel(request: Request, env: Env): Promise<Response> {
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">
-                        Close / بستن  
+                        Close / بستن
                       </button>
                     </div>
                     <div class="modal-body">
@@ -216,12 +216,15 @@ export async function GetPanel(request: Request, env: Env): Promise<Response> {
     </body>
     <script>
       window.addEventListener('message', function (event) {
-        document.getElementById('clean-ip').value = event.data;
+        if (typeof event?.data === 'string' || event?.data instanceof String) {
+					console.log('event.data', event.data);
+					document.getElementById('clean-ip').value = event.data;
+        }
       });
     </script>
     </html>
     `
-  
+
     return new Response(htmlContent, {
       headers: {"Content-Type": "text/html"},
     })
@@ -259,12 +262,12 @@ export async function GetPanel(request: Request, env: Env): Promise<Response> {
             <button onclick="var tmp=document.getElementById('clash-link');tmp.select();tmp.setSelectionRange(0,99999);navigator.clipboard.writeText(tmp.value)" class="btn btn-primary p-1 mb-1">Copy</button>
           </div>
           <div class="mx-5 my-2 p-1 border bg-warning text-center">
-            <p>The "settings" variable is not defined! Please define a namespace in Workers/KV section and add a variable named "settings" in your worker settings, as described in the video.</p>  
+            <p>The "settings" variable is not defined! Please define a namespace in Workers/KV section and add a variable named "settings" in your worker settings, as described in the video.</p>
             <p dir="rtl">متغیر settings تغریف نشده است. لطفا مطابق ویدیوی آموزشی، در بخش KV یک namespace تعریف کرده و در بخش متغیرهای ورکر، متغیر settings را اضافه نمایید.</p>
           </div>
           <div class="mx-5 my-2 p-1 border bg-success text-white text-center">
-            <p>You can continue using your worker without control panel.</p>  
-            <p>شما می‌توانید از ورکر خود بدون کنترل پنل استفاده نمایید.</p>  
+            <p>You can continue using your worker without control panel.</p>
+            <p>شما می‌توانید از ورکر خود بدون کنترل پنل استفاده نمایید.</p>
           </div>
         </div>
       </body>
