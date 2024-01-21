@@ -20,6 +20,7 @@ export async function GetPanel(request: Request, env: Env): Promise<Response> {
     const fingerPrints: Array<string> = (await env.settings.get("FingerPrints"))?.split("\n") || defaultPFList
     const providers: Array<string> = (await env.settings.get("Providers"))?.split("\n") || defaultProviders
     const cleanDomainIPs: Array<string> = (await env.settings.get("CleanDomainIPs"))?.split("\n") || []
+		console?.log({cleanDomainIPs})
     const configs: Array<string> = (await env.settings.get("Configs"))?.split("\n") || []
     const includeOriginalConfigs: string = await env.settings.get("IncludeOriginalConfigs") || "yes"
     const includeMergedConfigs: string = await env.settings.get("IncludeMergedConfigs") || "yes"
@@ -304,7 +305,8 @@ export async function PostPanel(request: Request, env: Env): Promise<Response> {
         await env.settings.put("Password", hashedPassword)
         await env.settings.put("Token", token)
       }
-      
+
+			console.log({'formData.get("clean_ips")': formData.get("clean_ips")});
       await env.settings.put("MaxConfigs", formData.get("max") || "200")
       await env.settings.put("Protocols", formData.getAll("protocols")?.join("\n").trim())
       await env.settings.put("ALPNs", formData.get("alpn_list")?.trim().split("\n").map(str => str.trim()).join("\n") || "")
